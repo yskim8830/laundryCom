@@ -1,0 +1,157 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<script id="data-stat-template" type="text/x-handlebars-template" >
+	<div class="row">
+        <div class="col-md-6">
+			<div class="card">
+			    <div class="card-body">
+                    <h2 class="card-title">입출고 현황 ({{dates}})</h2><br/>
+                    <h4 class="card-subtitle">입고건수 (방문자수: {{comma wereCnt.0.custCnt}}명, 총입고건:{{comma wereCnt.0.prodCnt}})</h4>
+					<div class="table-responsive" style="height: 300px; overflow-y: scroll;">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>품목명</th>
+                                    <th>가격</th>
+                                    <th>수량</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#iff wereList.length '>' 0}}
+									{{#each wereList}}
+									<tr>
+										<td>{{name}}</td>
+										<td>{{comma price}}원</td>
+										<td>{{comma cnt}}건</td>
+										
+                            		</tr>
+									{{/each}}
+								{{/iff}}
+								{{#iff wereList.length '<=' 0}}
+									<tr>
+										<td colspan="3">입고항목이 없습니다.</td>
+	                            	</tr>
+								{{/iff}}
+                            </tbody>
+                        </table>
+                    </div>
+                    <br/><br/><br/>
+					<h4 class="card-subtitle">출고건수 (방문:{{comma relCnt.0.visitCnt}}건, 배달:{{comma relCnt.0.deliveryCnt}}건)</h4>
+					<div class="table-responsive" style="height: 300px; overflow-y: scroll;">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>품목명</th>
+                                    <th>가격</th>
+                                    <th>수량</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#iff relList.length '>' 0}}
+									{{#each relList}}
+									<tr>
+										<td>{{name}}</td>
+										<td>{{comma price}}원</td>
+										<td>{{comma cnt}}건</td>
+										
+                            		</tr>
+									{{/each}}
+								{{/iff}}
+								{{#iff relList.length '<=' 0}}
+									<tr>
+										<td colspan="3">출고항목이 없습니다.</td>
+	                            	</tr>
+								{{/iff}}
+                            </tbody>
+                        </table>
+                    </div>
+			    </div>
+			</div>
+        </div>
+        <div class="col-md-6">
+        	<div class="card">
+		        <div class="card-body">
+		            <h2 class="card-title">매출 및 수익 ({{dates}})</h2><br/>
+                    <h4 class="card-subtitle">전체매출</h4>
+					<div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>총합</th>
+                                    <th>카드</th>
+                                    <th>현금</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{comma salesList.0.totalAmt}}</td>
+                                    <td>{{comma salesList.0.cardTotalAmt}}</td>
+                                    <td>{{comma salesList.0.payTotalAmt}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <br/><br/>
+                    <h4 class="card-subtitle">선불</h4>
+					<div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>총합</th>
+                                    <th>카드</th>
+                                    <th>현금</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{comma salesList.0.preAmt}}</td>
+                                    <td>{{comma salesList.0.preCardAmt}}</td>
+                                    <td>{{comma salesList.0.prePayAmt}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <br/><br/>
+                    <h4 class="card-subtitle">후불</h4>
+					<div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>총합</th>
+                                    <th>카드</th>
+                                    <th>현금</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{comma salesList.0.aftAmt}}</td>
+                                    <td>{{comma salesList.0.aftCardAmt}}</td>
+                                    <td>{{comma salesList.0.aftPayAmt}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <br/><br/>
+                    <h4 class="card-subtitle">기타</h4>
+					<div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>쿠폰사용</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{comma wereCnt.0.coupon}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+		        </div>
+		    </div>
+        </div>
+    </div>
+</script>

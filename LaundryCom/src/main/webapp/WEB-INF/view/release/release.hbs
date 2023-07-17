@@ -1,0 +1,48 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+
+<script id="data-form-template" type="text/x-handlebars-template">
+    <div class="card">
+        <div class="card-body">
+            <h6 class="card-title">고객리스트</h6>
+            <div class="table-responsive" data-click-to-select="true" style="overflow: auto;height: 220px;">
+	            <table class="table table-hover">
+	                <thead>
+	                    <tr>
+	                        <th>ID</th>
+	                        <th>고객명</th>
+	                        <th>전화번호</th>
+	                        <th>주소</th>
+	                        <th>등록일</th>
+	                        <th>최근방문일</th>
+	                        <th>최근출고일</th>
+	                    </tr>
+	                </thead>
+	                <tbody>
+	                {{#iff listModel.length '>' 0}}
+						{{#each listModel}}
+						<tr onClick="fGetCust('{{id}}');">
+							<td>{{id}}</td>
+							<td>{{name}}</td>
+							<td>{{tel_1}}-{{tel_2}}-{{tel_3}}</td>
+							<td>{{addr}}</td>
+							<td>{{reg_dt}}</td>
+							<td>{{lately_dt}}</td>
+							<td>{{release_dt}}</td>
+						</tr>
+						{{/each}}
+					{{/iff}}
+					{{#iff listModel.length '<=' 0}}
+						<tr>
+							<td colspan="6">검색된 고객이 없습니다.</td>
+						</tr>
+					{{/iff}}
+	                </tbody>
+	            </table>
+            </div>
+        </div>
+    </div>
+</script>

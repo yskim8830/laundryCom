@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.Laundry.data.dao.ManageDao">
+	<!--입고건수 (방문자수,총입고건) -->
+	<select id="selectWereCnt" resultType="kr.co.Laundry.data.dto.WereCntDto">
+		/*kr.co.Laundry.data.dao.ManageDao.selectWereCnt*/
+		SELECT count(distinct cust_id) as custCnt, count(prod_id) as prodCnt, count(if(is_coupon='Y',1,null)) as coupon
+		FROM tb_stock
+		WHERE 1=1
+		AND DATE_FORMAT(reg_dt, "%Y/%m/%d") <![CDATA[>=]]> #{start_date}
+		AND DATE_FORMAT(reg_dt, "%Y/%m/%d") <![CDATA[<=]]> #{end_date}
+  	</select>
+  	
+  	<!--입고건수 입고항목 -->
+	<select id="selectWereList" resultType="kr.co.Laundry.data.dto.WereListDto">
+		/*kr.co.Laundry.data.dao.ManageDao.selectWereList*/
+		SELECT tp.name, tp.price, ts.cnt FROM tb_prod tp,
+			(SELECT prod_id, count(prod_id) as cnt
+			FROM tb_stock
+			WHERE 1=1
+			AND DATE_FORMAT(reg_dt, "%Y/%m/%d") <![CDATA[>=]]> #{start_date}
+			AND DATE_FORMAT(reg_dt, "%Y/%m/%d") <![CDATA[<=]]> #{end_date}
+			GROUP BY prod_id ORDER BY count(prod_id) DESC) ts
+		WHERE tp.seq = ts.prod_id
+  	</select>
+  	
+  	<!--출고건수 (방문,배달갯수) -->
+	<select id="selectRelCnt" resultType="kr.co.Laundry.data.dto.RelCntDto">
+		/*kr.co.Laundry.data.dao.ManageDao.selectRelCnt*/
+		SELECT count(if(delivery='S',1,null)) as visitCnt, count(if(delivery='D',1,null)) as deliveryCnt
+		FROM tb_stock
+		WHERE 1=1
+        AND is_release = 'Y'
+		AND DATE_FORMAT(rel_dt, "%Y/%m/%d") <![CDATA[>=]]> #{start_date}
+		AND DATE_FORMAT(rel_dt, "%Y/%m/%d") <![CDATA[<=]]> #{end_date}
+  	</select>
+  	
+  	<!--출고건수 출고항목 -->
+	<select id="selectRelList" resultType="kr.co.Laundry.data.dto.RelListDto">
+		/*kr.co.Laundry.data.dao.ManageDao.selectRelList*/
+		SELECT tp.name, tp.price, ts.cnt FROM tb_prod tp,
+			(SELECT prod_id, count(prod_id) as cnt
+			FROM tb_stock
+			WHERE 1=1
+            AND is_release = 'Y'
+			AND DATE_FORMAT(rel_dt, "%Y/%m/%d") <![CDATA[>=]]> #{start_date}
+			AND DATE_FORMAT(rel_dt, "%Y/%m/%d") <![CDATA[<=]]> #{end_date}
+			GROUP BY prod_id ORDER BY count(prod_id) DESC) ts
+		WHERE tp.seq = ts.prod_id
+  	</select>
+  	
+  	<!--매출 정산 -->
+	<select id="selectSales" resultType="kr.co.Laundry.data.dto.SalesDto">
+		/*kr.co.Laundry.data.dao.ManageDao.selectSales*/
+		SELECT  sum(tp.price * ts.amount) AS totalAmt
+			, sum(CASE ts.card WHEN 'P' THEN tp.price * ts.amount ELSE 0 END) AS payTotalAmt
+            , sum(CASE ts.card WHEN 'C' THEN tp.price * ts.amount ELSE 0 END) AS cardTotalAmt
+            , sum(CASE ts.payment WHEN 'P' THEN tp.price * ts.amount ELSE 0 END) AS preAmt
+            , sum(CASE WHEN ts.payment = 'P' AND ts.card='P' THEN tp.price * ts.amount ELSE 0 END) AS prePayAmt
+            , sum(CASE WHEN ts.payment = 'P' AND ts.card='C' THEN tp.price * ts.amount ELSE 0 END) AS preCardAmt
+            , sum(CASE ts.payment WHEN 'A' THEN tp.price * ts.amount ELSE 0 END) AS aftAmt
+            , sum(CASE WHEN ts.payment = 'A' AND ts.card='P' THEN tp.price * ts.amount ELSE 0 END) AS aftPayAmt
+            , sum(CASE WHEN ts.payment = 'A' AND ts.card='C' THEN tp.price * ts.amount ELSE 0 END) AS aftCardAmt
+		FROM	tb_stock ts
+			, tb_prod tp
+		WHERE 1=1 
+		AND ts.prod_id = tp.seq
+        AND ts.is_coupon != 'Y'
+		AND DATE_FORMAT(ts.reg_dt, "%Y/%m/%d") <![CDATA[>=]]> #{start_date}
+		AND DATE_FORMAT(ts.reg_dt, "%Y/%m/%d") <![CDATA[<=]]> #{end_date}
+  	</select>
+</mapper>

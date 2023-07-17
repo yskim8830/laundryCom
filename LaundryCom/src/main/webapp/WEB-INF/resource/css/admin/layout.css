@@ -1,0 +1,29 @@
+@charset "utf-8";
+
+/* CSS Document */
+body	{background: #e2e6ed;}
+body.bgNone {background: none;}
+
+#wrap_area	{width:1280px;margin:0 auto;font-size: 13px;}
+#wrap_pop	{max-height:950px;padding:15px 30px;font-size: 13px;overflow: hidden;}
+
+#header	{position:relative;height: 79px;border-bottom:2px solid #c6cbd4;}
+#header .topUtil	{position:absolute;top:0px;right:0;}
+
+#container	{clear:both;width: 100%;}
+#container > ul	{float: left; background: #eff2f5; }
+#container > ul > li	{float: left;}
+#container ul li.lnb	{width:220px;min-height: 640px;background:#eff2f5;vertical-align: top;}
+#container ul li.contents {padding:0 20px;width:1020px;background:#fff;}
+#container ul li.contents .content {padding-top:16px;min-height: 650px;}
+
+
+/* footer 영역 */
+#footer	{margin:12px 0;background: #858f9c;}
+#footer p.copyright	{padding:0 20px;line-height: 75px;font-family: 'NanumBarunGothic';font-size:15px;color:#fff;}
+#footer p.copyright span	{float: right;}
+	
+	
+
+	
+	

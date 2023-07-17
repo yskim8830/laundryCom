@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.Laundry.data.dao.LoginDao">
+	<!-- 사용자 로그인 -->
+	<select id="selectLogin" resultType="kr.co.Laundry.data.dto.LoginDto">
+		/*kr.co.Laundry.login.dao.LoginDao.selectLogin*/
+		SELECT  *
+		FROM	tb_user
+		WHERE	1=1
+		AND	id = #{id}
+		AND pwd = #{pwd} 
+  	</select>
+</mapper>
